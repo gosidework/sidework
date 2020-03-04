@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package workpb;
+
+import "gogoproto/gogo.proto";
+
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.gogoproto_import) = false;
+
+message SystemError {
+    enum ErrorCode {
+        UNKNOWN = 0;
+        // TODO: add specific error code for system error
+    }
+    ErrorCode code = 1  [(gogoproto.jsontag) = "c,omitempty"];
+    string message = 2 [(gogoproto.jsontag) = "m,omitempty"];
+    repeated string backtrace = 3 [(gogoproto.jsontag) = "bt,omitempty"];
+}

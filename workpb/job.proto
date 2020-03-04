@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package workpb;
+
+import "gogoproto/gogo.proto";
+
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.gogoproto_import) = false;
+
+message Job {
+    // Universally Unique Lexicographically Sortable Identifier (ULID)
+    // https://github.com/oklog/ulid
+    string id = 1 [(gogoproto.jsontag) = "id,omitempty"];
+    string namespace = 2 [(gogoproto.jsontag) = "ns,omitempty"];
+    string queue = 3 [(gogoproto.jsontag) = "q,omitempty"];
+    string type = 4 [(gogoproto.jsontag) = "t,omitempty"];
+    bytes body = 6 [(gogoproto.jsontag) = "bd,omitempty"];
+    int64 created_at = 7 [(gogoproto.jsontag) = "cat,omitempty"];
+    int64 enqueued_at = 8 [(gogoproto.jsontag) = "eat,omitempty"];
+    int64 at = 9 [(gogoproto.jsontag) = "at,omitempty"];
+    // TTL in seconds
+    uint32 ttl = 10 [(gogoproto.jsontag) = "ttl,omitempty"];
+    uint32 retry = 11 [(gogoproto.jsontag) = "rt,omitempty"];
+    Failure failure = 12 [(gogoproto.jsontag) = "f,omitempty"];
+}
+
+message Failure {
+    int32 retry_count = 1 [(gogoproto.jsontag) = "rc,omitempty"];
+    int64 failed_at = 2 [(gogoproto.jsontag) = "fat,omitempty"];
+    int64 next_at = 3 [(gogoproto.jsontag) = "nat,omitempty"];
+    Error error = 4 [(gogoproto.jsontag) = "e,omitempty"];
+    repeated string backtrace = 5 [(gogoproto.jsontag) = "bt,omitempty"];
+}
+
+message Error {
+    string message = 1 [(gogoproto.jsontag) = "m,omitempty"];
+    string type = 2 [(gogoproto.jsontag) = "t,omitempty"];
+}
